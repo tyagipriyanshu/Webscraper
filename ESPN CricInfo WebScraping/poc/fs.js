@@ -2,7 +2,7 @@
 // js is alway wrapped inside an enviornment
 // js doesn't have main-> global execution context 
 // execute line by line
-// 
+
 let fs = require("fs");
 // sync example
 // serial
@@ -10,10 +10,12 @@ let fs = require("fs");
 // let content = fs.readFileSync("f1.txt");
 // console.log("content " + content);
 // console.log("After");
-// // async version 
+
+// async version 
 console.log("before");
 // async function ??
-// -> you can't create async functions
+// -> you can't create async functions, using a language like JS.
+// -> NodeJS (framework) provides the async functions.
 // nodejs an async function cannot block the main stack 
 fs.readFile("f1.txt", function (err, content) {
     if (err) {
