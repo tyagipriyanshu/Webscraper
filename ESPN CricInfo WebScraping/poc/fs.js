@@ -17,9 +17,9 @@ console.log("before");
 // -> you can't create async functions, using a language like JS.
 // -> NodeJS (framework) provides the async functions.
 // -> A callback is a function passed as an argument to another function.
-// -> callback func tb call hoga when rest of the code has executed.
+// -> callback func tb call hoga jb file read ho chuki hogi and when rest of the code has executed.
 // -> an async function cannot block the main stack.
-// -> File System Processes, Network requests are slow. So, we use async func.
+// -> File System Processes, Network requests are slow. So, async func is used.
 fs.readFile("f1.txt", function (err, content) {
     if (err) {
         console.log(err);

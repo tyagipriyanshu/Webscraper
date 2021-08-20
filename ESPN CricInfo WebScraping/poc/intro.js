@@ -1,7 +1,7 @@
 // // variable declare 
 // let a;
 // console.log(a);
-// // primitve types : number string undefined boolean null symbol
+// // primitive types : number string undefined boolean null symbol
 // a = 1;
 // console.log(a);
 // a = null;
