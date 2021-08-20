@@ -16,7 +16,8 @@ console.log("before");
 // async function ??
 // -> you can't create async functions, using a language like JS.
 // -> NodeJS (framework) provides the async functions.
-// nodejs an async function cannot block the main stack 
+// -> an async function cannot block the main stack.
+// -> File System Processes, Network requests are slow. So, we use async func.
 fs.readFile("f1.txt", function (err, content) {
     if (err) {
         console.log(err);
