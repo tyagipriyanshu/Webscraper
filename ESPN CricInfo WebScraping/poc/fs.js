@@ -29,4 +29,5 @@ console.log("After");
 for (let i = 1; i <= 10; i++) {
     console.log("Number is ", i);
 }
-// while (true);
+
+// while (true);              //kbhi content print hi nhi hoga kuki main stack kbhi khali hi nhi hogi.
