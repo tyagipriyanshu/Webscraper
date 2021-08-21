@@ -23,8 +23,9 @@ function extractData(html) {
     // cheerio.load() parses the html 
     // and returns a function that is used to select elements from that html page using css selectors
     let $ = cheerio.load(html);
-    // unique element -> element && array 
     let elem = $(".section-header.border-bottom.border-0.p-0 h5.header-title.label");
+    // unique element selector -> returns element (object)
+    // not unique -> returns array of elements (objects) 
     console.log(elem.text());
 
 }
