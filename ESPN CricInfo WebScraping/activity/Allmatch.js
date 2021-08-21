@@ -9,7 +9,7 @@ function getAllMatchesLink(url) {
         else {
             extractAllLinks(html);
         }
-    })
+    });
 }
 function extractAllLinks(html) {
     let $ = cheerio.load(html);
@@ -20,10 +20,10 @@ function extractAllLinks(html) {
         let fullLink = "https://www.espncricinfo.com" + link;
         // console.log(fullLink);
         scoreCardObj.ps(fullLink);
-        // 
     }
 }
 // inbuilt feature
+// you can export function object of a file to another file in nodeJS.
 module.exports = {
-    gAlmatches: getAllMatchesLink
+    gAllmatches: getAllMatchesLink
 }

@@ -1,4 +1,5 @@
 // nodejs
+// You must specify ./ as a path of root folder to import a local module. 
 let libObj = require("./lib");
 console.log("I am code file");
 console.log(libObj)

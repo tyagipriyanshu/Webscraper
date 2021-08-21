@@ -4,10 +4,12 @@ const path = require("path");
 // Venue date opponent result runs balls fours sixes sr
 const request = require("request");
 const cheerio = require("cheerio");
-const AllMatcgObj = require("./Allmatch");
+const AllMatchObj = require("./Allmatch");
+
 // home page 
 const iplPath = path.join(__dirname, "ipl");
-dirCreater(iplPath);
+dirCreator(iplPath);
+
 request(url, cb);
 function cb(err, response, html) {
     if (err) {
@@ -20,17 +22,16 @@ function cb(err, response, html) {
 function extractLink(html) {
     let $ = cheerio.load(html);
     let anchorElem = $("a[data-hover='View All Results']");
-    // 
+    // Attributes can be retrieved with attr() function.
     let link = anchorElem.attr("href");
     // console.log(link);
     let fullLink = "https://www.espncricinfo.com" + link;
-    console.log(fullLink);
-    AllMatcgObj.gAlmatches(fullLink);
+    // console.log(fullLink);
+    AllMatchObj.gAllmatches(fullLink);
 }
 
-function dirCreater(filePath) {
+function dirCreator(filePath) {
     if (fs.existsSync(filePath) == false) {
         fs.mkdirSync(filePath);
     }
-
 }
