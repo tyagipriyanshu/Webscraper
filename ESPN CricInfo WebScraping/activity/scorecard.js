@@ -5,7 +5,7 @@ const cheerio = require("cheerio");
 const path = require("path");
 const fs = require("fs");
 const xlsx = require("xlsx");
-// home page 
+
 function processScorecard(url) {
     // API
     request(url, cb);
@@ -18,6 +18,7 @@ function cb(err, response, html) {
         extractMatchDetails(html);
     }
 }
+
 function extractMatchDetails(html) {
     // Venue date opponent result runs balls fours sixes sr
     // ipl 
@@ -67,15 +68,19 @@ function extractMatchDetails(html) {
     console.log("`````````````````````````````````````````````````");
     // console.log(htmlString);
 }
+
 function processPlayer(teamName, playerName, runs, balls, fours, sixes, sr, opponentName, venue, date, result) {
     let teamPath = path.join(__dirname, "ipl", teamName);
-    // directory create if not created
-    dirCreater(teamPath);
+    // create team directory if not created
+    dirCreator(teamPath);
+
     let filePath = path.join(teamPath, playerName + ".xlsx");
-    // reads the content if file exists and returns an empty array file does not exist 
+    // if file exists -> reads the content
+    // if file does not exist -> returns an empty array 
     let content = excelReader(filePath, playerName);
+
     let playerObj = {
-        teamName,
+        teamName,                  // same as -> "teamName" : teamName
         playerName,
         runs,
         balls,
@@ -86,32 +91,37 @@ function processPlayer(teamName, playerName, runs, balls, fours, sixes, sr, oppo
         venue,
         date,
         result
-    }
+    };
+
     content.push(playerObj);
+
     // excel write
     excelWriter(filePath, content, playerName);
 }
-function dirCreater(filePath) {
+
+function dirCreator(filePath) {
 
     if (fs.existsSync(filePath) == false) {
         fs.mkdirSync(filePath);
     }
-
 }
+
 function excelWriter(filePath, json, sheetName) {
-    // workbook create
+    // create workbook 
     let newWB = xlsx.utils.book_new();
-    // worksheet
+    // create worksheet
     let newWS = xlsx.utils.json_to_sheet(json);
     xlsx.utils.book_append_sheet(newWB, newWS, sheetName);
-    // excel file create 
+    // create excel file  
     xlsx.writeFile(newWB, filePath);
 }
-// // json data -> excel format convert
-// // -> newwb , ws , sheet name
-// // filePath
+
+// json data -> excel format convert
+// -> newwb , ws , sheet name
+// filePath
 // read 
-//  workbook get
+// workbook get
+
 function excelReader(filePath, sheetName) {
     if (fs.existsSync(filePath) == false) {
         return [];

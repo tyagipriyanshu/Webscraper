@@ -1,5 +1,5 @@
 let a = 10;
-// console.log("I will be executed");
+console.log("I will be executed");
 function fn(param) {
     console.log("I want to be exported ", param);
 }
