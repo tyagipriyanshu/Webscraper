@@ -23,7 +23,6 @@ function extractAllLinks(html) {
     }
 }
 // inbuilt feature
-// you can export function object of a file to another file in nodeJS.
 module.exports = {
     gAllmatches: getAllMatchesLink
 }
