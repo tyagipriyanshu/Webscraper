@@ -14,11 +14,14 @@ function getAllMatchesLink(url) {
 function extractAllLinks(html) {
     let $ = cheerio.load(html);
     // cheerio -> access index wrap 
-    let scorecardElems = $("a[data-hover='Scorecard']");
+    // let scorecardElems = $("a[data-hover='Scorecard']");             //old website
+    
+    let scorecardElems = $('div.ds-p-4 .ds-grow > a');
+    console.log(scorecardElems.length);
     for (let i = 0; i < scorecardElems.length; i++) {
         let link = $(scorecardElems[i]).attr("href");
         let fullLink = "https://www.espncricinfo.com" + link;
-        // console.log(fullLink);
+        console.log(fullLink);
         scoreCardObj.ps(fullLink);
     }
 }

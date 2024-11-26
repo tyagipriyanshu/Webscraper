@@ -1,5 +1,5 @@
-// const url = "https://www.espncricinfo.com/series/ipl-2020-21-1210595/mumbai-indians-vs-chennai-super-kings-1st-match-1216492/full-scorecard";
-// Venue date opponent result runs balls fours sixes sr
+// const url = "https://www.espncricinfo.com/series/indian-premier-league-2023-1345038/chennai-super-kings-vs-gujarat-titans-qualifier-1-1370350/full-scorecard";
+
 const request = require("request");
 const cheerio = require("cheerio");
 const path = require("path");
@@ -10,6 +10,8 @@ function processScorecard(url) {
     // API
     request(url, cb);
 }
+
+// request(url, cb);
 function cb(err, response, html) {
     if (err) {
         console.log(err);
@@ -20,39 +22,55 @@ function cb(err, response, html) {
 }
 
 function extractMatchDetails(html) {
-    // Venue date opponent result runs balls fours sixes sr
-    // ipl 
-    // team 
-    //     player 
-    //         runs balls fours sixes sr opponent venue date  result
-    // venue date 
-    // .event .description
-    // result ->  .event.status - text
+    // ==============================================================
+    // ipl ->
+    //   team -> 
+    //     player -> 
+    //         |runs|balls|fours|sixes|sr|opponent|venue|date|result|
+    // ==============================================================
+
+    // venue, date, result  -> common for both teams
+    // venue, date -> div.ds-grow div.ds-text-tight-m
+    // result -> p.ds-text-tight-s.ds-font-medium    
+    
     let $ = cheerio.load(html);
-    let descElem = $(".event .description");
-    let result = $(".event .status-text");
-    let stringArr = descElem.text().split(",");
-    let venue = stringArr[1].trim();
+    let venueDate = $("div.ds-grow div.ds-text-tight-m");
+    let result = $("p.ds-text-tight-s.ds-font-medium");
+    // console.log(venueDate.text());
+    // console.log(result.text());
+
+    // to fetch date & venue 
+    let stringArr = venueDate.text().split(",");         
+    let venue = stringArr[1].trim();                  //trim() -> to remove white spaces
     let date = stringArr[2].trim();
     result = result.text();
-    let innings = $(".card.content-block.match-scorecard-table>.Collapsible");
+
+    let innings = $(".ds-rounded-lg.ds-mt-2 > .ds-w-full.ds-bg-fill-content-prime");
     // let htmlString = "";
     for (let i = 0; i < innings.length; i++) {
-        // htmlString = $(innings[i]).html();
-        // team opponent
-        let teamName = $(innings[i]).find("h5").text();
-        teamName = teamName.split("INNINGS")[0].trim();
+        // htmlString = $(innings[i]).html(); 
+
+        // to fetch team & opponent
+        let teamName = $(innings[i]).find("span.ds-text-title-xs.ds-font-bold.ds-capitalize").text();
+        // teamName = teamName.split("INNINGS")[0].trim();          // older website
         let opponentIndex = i == 0 ? 1 : 0;
-        let opponentName = $(innings[opponentIndex]).find("h5").text();
-        opponentName = opponentName.split("INNINGS")[0].trim();
+        let opponentName = $(innings[opponentIndex]).find("span.ds-text-title-xs.ds-font-bold.ds-capitalize").text();
+        // opponentName = opponentName.split("INNINGS")[0].trim();    // older website
+        console.log(`${venue} | ${date} | ${teamName} | ${opponentName} | ${result}`);
+         
         let cInning = $(innings[i]);
-        console.log(`${venue}| ${date} |${teamName}| ${opponentName} |${result}`);
-        let allRows = cInning.find(".table.batsman tbody tr");
+        let allRows = cInning.find("table.ci-scorecard-table tbody tr");
         for (let j = 0; j < allRows.length; j++) {
+            // -----logic to check if it is a batsman row in older website------
+            // let allCols = $(allRows[j]).find("td");
+            // let isWorthy = $(allCols[0]).hasClass("batsman-cell"); 
+            // ------------------------------------------------------------------- 
+            // ds-w-0 ds-whitespace-nowrap ds-min-w-max ds-flex ds-items-center
             let allCols = $(allRows[j]).find("td");
-            let isWorthy = $(allCols[0]).hasClass("batsman-cell");
-            if (isWorthy == true) {
-                // console.log(allCols.text());
+            let isWorthy = $(allCols[0]).hasClass("ds-whitespace-nowrap");  
+
+            if (isWorthy) {                             // a batsman row
+   
                 //       Player  runs balls fours sixes sr 
                 let playerName = $(allCols[0]).text().trim();
                 let runs = $(allCols[2]).text().trim();
@@ -75,6 +93,7 @@ function processPlayer(teamName, playerName, runs, balls, fours, sixes, sr, oppo
     dirCreator(teamPath);
 
     let filePath = path.join(teamPath, playerName + ".xlsx");
+    
     // if file exists -> reads the content
     // if file does not exist -> returns an empty array 
     let content = excelReader(filePath, playerName);
@@ -100,7 +119,6 @@ function processPlayer(teamName, playerName, runs, balls, fours, sixes, sr, oppo
 }
 
 function dirCreator(filePath) {
-
     if (fs.existsSync(filePath) == false) {
         fs.mkdirSync(filePath);
     }

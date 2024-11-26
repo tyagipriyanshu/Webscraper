@@ -1,12 +1,11 @@
-const url = "https://www.espncricinfo.com/series/ipl-2020-21-1210595";
+// home page 
+const url = "https://www.espncricinfo.com/series/indian-premier-league-2023-1345038";
 const fs = require("fs");
 const path = require("path");
-// Venue date opponent result runs balls fours sixes sr
 const request = require("request");
 const cheerio = require("cheerio");
 const AllMatchObj = require("./Allmatch");
 
-// home page 
 const iplPath = path.join(__dirname, "ipl");
 dirCreator(iplPath);
 
@@ -21,12 +20,15 @@ function cb(err, response, html) {
 }
 function extractLink(html) {
     let $ = cheerio.load(html);
-    let anchorElem = $("a[data-hover='View All Results']");
+    // let anchorElem = $("a[data-hover='View All Results']");          //old website
+    let anchorElem = $("a[title='View All Results']");
+
     // Attributes can be retrieved with attr() function.
     let link = anchorElem.attr("href");
-    // console.log(link);
+    console.log(link);
+
     let fullLink = "https://www.espncricinfo.com" + link;
-    // console.log(fullLink);
+    console.log(fullLink);
     AllMatchObj.gAllmatches(fullLink);
 }
 
