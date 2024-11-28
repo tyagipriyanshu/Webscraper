@@ -7,7 +7,7 @@ This Node.js web scraper extracts detailed player statistics from the **IPL 2023
 * **Parallel Requests**: Utilizes the `request` package to make parallel HTTP requests for fast scraping.
 * **HTML Parsing**: Uses `Cheerio` to parse HTML and extract player statistics from match scorecards.
 * **Excel Export**: Saves each player's performance data into individual **Excel** files, using the `xlsx` module.
-* **Team Directories and Player Excel Files**: Creates directories for each IPL team (e.g., "Mumbai Indians") within an `ipl` folder using the `fs` module, and stores each player's Excel file in their respective team directory.
+* **Team Directories and Player Excel Files**: Creates directories for each IPL team (e.g., "Mumbai Indians") within an "ipl" folder using the `fs` module, and stores each player's Excel file in their respective team directory.
 
 ## Installation
 To run this scraper locally, follow these steps:
